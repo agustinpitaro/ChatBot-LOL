@@ -1,0 +1,4 @@
+CADA ELO -> api.champion.gg/v2/champions?elo=SILVER&champData=kda,damage,averageGames,totalHeal,killingSpree,minions,gold,positions,trinkets,runes,firstitems,summoners,skills,finalitems,masteries,maxMins,matchups&limit=200&api_key=<API_KEY>, 
+                      winRate, playRate, gamesPlayed, percentRolePlayed, banRate, role.
+                      
+                
