@@ -53,15 +53,6 @@ public class Client {
 	     }
 	     Utilities.createTxt(salida);
 	   }
-
-	public static void main(String[] args) {
-		try {
-		
-			Client.search("");;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    }
 }
 
 
