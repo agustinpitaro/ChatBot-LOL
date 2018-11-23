@@ -33,23 +33,12 @@ public class Client {
 	     }
 	     String entrada = response.toString();
 	     String salida = "";
-	     boolean coma = false;
 	     int cursor = 0;
 	     for (int i = 0;i<entrada.length();i++){
 	    	 if(entrada.charAt(i) == '{' || entrada.charAt(i) == '}'){
 	    		 salida = salida + entrada.substring(cursor, i) + "\n";
 	    		 i++;
 	    		 cursor = i;
-	    		 coma = false;
-	    	 }
-	    	 if(entrada.charAt(i) == ',' ){
-	    		 coma = true;
-	    	 }
-	    	 if(entrada.charAt(i) == '"' && coma){
-	    		 salida = salida + entrada.substring(cursor, i-1) + "\n";
-	    		 i++;
-	    		 cursor = i;
-	    		 coma = false;
 	    	 }
 	     }
 	     Utilities.createTxt(salida);
