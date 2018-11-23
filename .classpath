@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="TP Objetos/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/commons-cli-1.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/commons-codec-1.11.jar"/>
@@ -19,5 +20,8 @@
 	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/reactive-streams-1.0.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/riot-api-java.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/lucene-core-7.5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/lucene-expressions-7.5.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Agustin/git/ChatBot-LOL/TP Objetos/lib/lucene-queryparser-7.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
