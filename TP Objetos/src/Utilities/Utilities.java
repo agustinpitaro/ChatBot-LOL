@@ -1,36 +1,30 @@
 package Utilities;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 
 public class Utilities {
 	public static String readArch(String ruta) { // Lee el archivo y retorna
 													// su contenido en un String
-		String codigoFuente = "";
-		BufferedReader objReader = null;
+		File file = new File(ruta);
+		Scanner input = null;
 		try {
-			objReader = new BufferedReader(new FileReader(ruta));
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			input = new Scanner(file);
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
 		}
-		try {
-			while (objReader.readLine() != null) {
-					codigoFuente = codigoFuente + objReader.readLine();
+		String list = "";
 
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		try {
-			if (objReader.readLine() == null)
-				objReader.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		while (input.hasNextLine()) {
+			String aux = input.nextLine();
+		    list = list + aux;
 		}
-		return codigoFuente;
+		if (!input.hasNextLine())
+			input.close();
+		return list;
 	}
 
 	public static void createTxt(String f) {

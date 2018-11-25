@@ -1,4 +1,3 @@
-Resultados de la busqueda:
 [
 "_id":
 "championId":64,"role":"JUNGLE"

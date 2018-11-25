@@ -23,7 +23,9 @@ public class Filter {
 
 	public void loadTokens() { // carga los tokens en el hash
 		char c;
-		while (indice < data.length() || data.charAt(indice) == -1) {
+		String actualChamp = "";
+		boolean selectedChamp = false;
+		while (indice < data.length()) {
 			c = data.charAt(indice);
 			if (c != ']' && c != '}' && c != '[' && c != '{') {
 				if (c == ':' && !pointer) {
@@ -36,15 +38,25 @@ public class Filter {
 						buffer = "";
 					} else {
 						if (c == ',' && pointer) { // encontre par
-							store.put(temp.replace("\"", ""), buffer);
-							pointer = false;
-							temp = "";
-							buffer = "";
+							if (temp.contains("championId")){
+								actualChamp = buffer;								
+							}
+							else{
+								store.put(temp.replace("\"", ""), buffer);
+								pointer = false;
+								temp = "";
+								buffer = "";
+							}
+							
 						} else {
 							buffer = buffer + c;
 						}
 					}
 				}
+			}
+			if (temp.contains("championId")){
+				temp = "championId";
+				selectedChamp = true;
 			}
 			indice++;
 		}
