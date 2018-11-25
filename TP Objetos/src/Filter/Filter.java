@@ -6,62 +6,72 @@ public class Filter {
 
 	HashMap<String, String> store;
 	int indice = 0;
-	boolean EOF = false;
-	String data;
-	String buffer;
-	String temp;
-	boolean pointer = false;
 
 	public Filter(String path, String query) {
 		store = new HashMap<String, String>();
-		data = Utilities.Utilities.readArch(path);
-		buffer = "";
-		temp = "";
-		loadTokens();
+		loadTokens(path);
 
 	}
 
-	public void loadTokens() { // carga los tokens en el hash
-		char c;
-		String actualChamp = "";
-		boolean selectedChamp = false;
+	public void loadTokens(String path) { // carga los tokens en el hash
+		char c = 'x';
+		String data = Utilities.Utilities.readArch(path);
+		String buffer = "";
+		String temp = "";
+		String group = "";
+		boolean pointer = false;
+		String actualChamp = ""; // campeon actual
+		boolean selectChamp = false; // indica que tiene un champ seleccionado
 		while (indice < data.length()) {
 			c = data.charAt(indice);
 			if (c != ']' && c != '}' && c != '[' && c != '{') {
 				if (c == ':' && !pointer) {
-					temp = buffer;
+					temp = buffer.replace("\"", "");
 					pointer = true;
 					buffer = "";
 				} else {
-					if (c == ':' && pointer) {
-						temp = temp + "-" + buffer;
+					if (c == ':' && pointer && group == "") {
+						group = temp + "-" + buffer.replace("\"", "");
+						temp = group ;
 						buffer = "";
 					} else {
-						if (c == ',' && pointer) { // encontre par
-							if (temp.contains("championId")){
-								actualChamp = buffer;								
-							}
-							else{
-								store.put(temp.replace("\"", ""), buffer);
-								pointer = false;
-								temp = "";
-								buffer = "";
-							}
-							
-						} else {
-							buffer = buffer + c;
+						if (c == ':' && pointer && group != "") {
+							temp = group + "-" +buffer.replace("\"", "");
+							buffer = "";
 						}
+					}
+					if (c == ',' && pointer) { // encontre par
+						if (selectChamp) {
+							actualChamp = buffer.replace(":", "");
+							pointer = false;
+							temp = "";
+							buffer = "";
+							selectChamp = false;
+						} else {
+							if (store.containsKey((temp + "-" + actualChamp))){
+								System.out.println("xdd");
+							}
+							store.put(temp.replace("\"", "") + "-" + actualChamp, buffer.replace("\"", "")); //Temp contiene el campo y buffer su valor
+							pointer = false;
+							temp = "";
+							buffer = "";
+						}
+					} else {
+						buffer = buffer + c;
 					}
 				}
 			}
-			if (temp.contains("championId")){
-				temp = "championId";
-				selectedChamp = true;
+		
+			if (temp.equals("_id")) { // Limpia las variables auxiliares porque va a entrar otro campeon
+				actualChamp = "000";
+				selectChamp = false;
 			}
-			indice++;
+			if (temp.contains("championId") && !selectChamp) { // actualiza el FLAG para capturar el campeon
+				temp = "";
+				selectChamp = true;																									
+			}
+			indice++;												
 		}
-	boolean end = true;
 	}
-	
 }
 
