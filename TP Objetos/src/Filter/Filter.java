@@ -43,8 +43,8 @@ public class Filter {
 					if (c == ',' && pointer) { // encontre par
 						if (selectChamp) {
 							actualChamp = buffer.replace(":", "");
-							pointer = false;
 							temp = "";
+							pointer = false;
 							buffer = "";
 							selectChamp = false;
 						} else {
