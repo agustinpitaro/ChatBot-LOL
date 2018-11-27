@@ -78,10 +78,8 @@ public class Utilities {
 	    }
 	    return list;
 	}
-	public static void createTxt(String f) {
+	public static void createTxt(String f, String ruta) {
 		try {
-
-			String ruta = "Resultados.txt";
 			BufferedWriter salida = new BufferedWriter(new FileWriter(ruta));
 			salida.write(f);
 			salida.close();

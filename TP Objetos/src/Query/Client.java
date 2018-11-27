@@ -5,6 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -42,7 +43,13 @@ public class Client {
 	     JSONArray array = new JSONArray(entrada); //Creo estructura de la consulta
 	     
 	     List<Object> DataBase = Utilities.JSONArraytoList(array); //Convierto a Lista de Maps
-	     Utilities.createTxt(entrada);
+	     
+	     for (Object j : DataBase){
+	    	 Integer aux = (Integer) ((HashMap<String, Object>) j).get("championId");
+	    	 Utilities.createTxt(j.toString(), aux.toString() + ".txt");
+	    	
+	     }
+	    // Utilities.createTxt(entrada, "");
 	   }
 }
 
