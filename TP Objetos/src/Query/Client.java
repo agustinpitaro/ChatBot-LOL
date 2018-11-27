@@ -3,8 +3,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import Utilities.*;
 
@@ -32,16 +39,10 @@ public class Client {
 	     	response.append(inputLine);
 	     }
 	     String entrada = response.toString();
-	     String salida = "";
-	     int cursor = 0;
-	     for (int i = 0;i<entrada.length();i++){
-	    	 if(entrada.charAt(i) == '{' || entrada.charAt(i) == '}'){
-	    		 salida = salida + entrada.substring(cursor, i) + "\n";
-	    		 i++;
-	    		 cursor = i;
-	    	 }
-	     }
-	     Utilities.createTxt(salida);
+	     JSONArray array = new JSONArray(entrada); //Creo estructura de la consulta
+	     
+	     List<Object> DataBase = Utilities.JSONArraytoList(array); //Convierto a Lista de Maps
+	     Utilities.createTxt(entrada);
 	   }
 }
 
