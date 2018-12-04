@@ -9,7 +9,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -29,6 +31,9 @@ import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockFactory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.json.JSONArray;
+
+import Utilities.Utilities;
 
 	
 
@@ -38,37 +43,73 @@ public class Indexador {
 	private static Directory directory ;
 	private static IndexWriterConfig config;
 	private static FileReader fr;
+	private static HashMap<Integer, String> champsTranslator;
 	
 	public Indexador() throws IOException {
-		this.sA = new StandardAnalyzer();
-		this.directory = new SimpleFSDirectory(Paths.get("‪asd"));
-		this.config = new IndexWriterConfig(sA);
-		
+		Indexador.sA = new StandardAnalyzer();
+		Indexador.directory = new SimpleFSDirectory(Paths.get("‪Index"));
+		Indexador.config = new IndexWriterConfig(sA);
+		Indexador.champsTranslator = new HashMap<Integer, String>();
 	}
 	
-	public static void createIndex() throws CorruptIndexException, LockObtainFailedException, IOException {
-		IndexWriter indexWriter = new IndexWriter(directory, config);
-		File dir = new File("1.txt");
-		Document document = new Document();
+	
+	public static String getChampsTranslator(int id) {
+		return champsTranslator.get(id);
+	}
 
-		//String path = dir.getCanonicalPath();
-		document.add(new TextField("path", "‪C://Users//Agustin//git//ChatBot-LOL//TP Objetos//1.txt", Field.Store.YES));
+
+	private static void ChampSetter() throws Exception {
+
+	     String url = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json";
+		 URL obj = new URL(url);
+	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+	     con.setRequestMethod("GET");
+	     con.setRequestProperty("User-Agent", "Mozilla/5.0");
+	     BufferedReader in = new BufferedReader(
+	             new InputStreamReader(con.getInputStream()));
+	     String inputLine;
+	     StringBuffer response = new StringBuffer();
+	     while ((inputLine = in.readLine()) != null) {
+	     	response.append(inputLine);
+	     }
+	     String entrada = response.toString();
+	     JSONArray array = new JSONArray(entrada); //Creo estructura de la consulta
+	     
+	     List<Object> DataBase = Utilities.JSONArraytoList(array); //Convierto a Lista de Maps
+	     
+	     for (Object j : DataBase){
+	    	 Integer id = (Integer) ((HashMap<String, Object>) j).get("id");
+	    	 String name = (String) ((HashMap<String, Object>) j).get("name");
+	    	 champsTranslator.put(id, name);
+	    	
+	     }
+	   }
+
+	public static void createIndex() throws Exception {
+		
+		ChampSetter();
+		
+		IndexWriter indexWriter = new IndexWriter(directory, config);
+		File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
+		/*Document document = new Document();
+
+		String path = dir.getCanonicalPath();
+		document.add(new TextField("path", path , Field.Store.YES));
 		
 		Reader reader = new FileReader(dir);
 		document.add(new TextField("Darius", reader));
-		indexWriter.addDocument(document);
+		indexWriter.addDocument(document);*/
 		
-		/*File[] files = dir.listFiles();
+		File[] files = dir.listFiles();
 		for (File file : files) {
 			Document document = new Document();
-
 			String path = file.getCanonicalPath();
 			document.add(new TextField("path", path, Field.Store.YES));
-			
 			Reader reader = new FileReader(file);
-			document.add(new TextField("Darius", "OP TOP", Field.Store.YES));
+			String AuxName = file.getName();
+			document.add(new TextField(AuxName.substring(0, AuxName.length()-4), reader));
 			indexWriter.addDocument(document);
-		}*/
+		}
 		indexWriter.close();
 	}
 
@@ -92,32 +133,11 @@ public class Indexador {
 	}
 	
 	
-	public static void main(String[] args) throws IOException, ParseException {
-	
-		/*StandardAnalyzer standardAnalyzer = new StandardAnalyzer();
-		IndexWriterConfig config = new IndexWriterConfig(standardAnalyzer);
-	     
-	     //Create a writer
-	     IndexWriter writer = new IndexWriter(directory, config);
-	     Document document = new Document ();
-	     //In a real world example, content would be the actual content that needs to be indexed.
-	     //Setting content to Hello World as an example.
-	     document.add(new TextField("Champ", "Darius", Field.Store.YES));
-	     document.add(new TextField("Winrate", "0,10", Field.Store.YES));
-	     writer.addDocument(document);
-	     writer.close();
-	     
-	     //Now let's try to search for Hello
-	     IndexReader reader = DirectoryReader.open(directory);
-	     IndexSearcher searcher = new IndexSearcher (reader);
-	     QueryParser Champsparser = new QueryParser ("Champs", standardAnalyzer);
-	     //QueryParser Itemsparser = new QueryParser ("Items", standardAnalyzer);
-	     //QueryParser Runesparser = new QueryParser ("Runes", standardAnalyzer);
-	     Query query = Champsparser.parse("Darius");
-	     TopDocs results = searcher.search(query, 5);*/
+	public static void main(String[] args) throws Exception {
+		
 		Indexador i = new Indexador();
 		i.createIndex();
-		i.searchIndex("DUO_SUPPORT", "Darius");
+		i.searchIndex("TOP", "Darius");
 	     
     }
 }

@@ -80,6 +80,8 @@ public class Utilities {
 	}
 	public static void createTxt(String f, String ruta) {
 		try {
+			File file = new File(ruta);
+			file.getParentFile().mkdirs(); 
 			BufferedWriter salida = new BufferedWriter(new FileWriter(ruta));
 			salida.write(f);
 			salida.close();

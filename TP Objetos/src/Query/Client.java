@@ -17,13 +17,15 @@ import com.google.gson.reflect.TypeToken;
 import Utilities.*;
 
 public class Client {
+	
+;
 		   
 	public static void search(String asd) throws Exception {
-		 String apiKey = "ec545d402ebd648449b6cf282cf288fb";
+		 String apiKey = "ec545d402ebd648449b6cf282cf288fb"; 
 		 String elo = "GOLD";
 		 String parameters = "kda,hashes";
 	     String url = "http://api.champion.gg/v2/champions?elo=" + elo + "&champData=" + parameters +"&limit=200&api_key=" + apiKey;
-	     URL obj = new URL(url);
+		 URL obj = new URL(url);
 	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 	     // optional default is GET
 	     con.setRequestMethod("GET");
@@ -46,9 +48,10 @@ public class Client {
 	     
 	     for (Object j : DataBase){
 	    	 Integer aux = (Integer) ((HashMap<String, Object>) j).get("championId");
-	    	 Utilities.createTxt(j.toString(), aux.toString() + ".txt");
-	    	
+	    	 Utilities.createTxt(j.toString(), "C:/Users/Agustin/git/ChatBot-LOL/database/" + aux.toString() + ".txt");
+	
 	     }
+
 	    // Utilities.createTxt(entrada, "");
 	   }
 }
