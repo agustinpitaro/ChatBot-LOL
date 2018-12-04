@@ -28,42 +28,53 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.store.LockFactory;
 import org.apache.lucene.store.LockObtainFailedException;
-import org.apache.lucene.store.RAMDirectory;
+import org.apache.lucene.store.SimpleFSDirectory;
 
 	
 
 public class Indexador {
 	
 	private static StandardAnalyzer sA;
-	private static Directory directory;
+	private static Directory directory ;
 	private static IndexWriterConfig config;
+	private static FileReader fr;
 	
-	public Indexador() {
+	public Indexador() throws IOException {
 		this.sA = new StandardAnalyzer();
-		this.directory = new RAMDirectory();
+		this.directory = new SimpleFSDirectory(Paths.get("‪asd"));
 		this.config = new IndexWriterConfig(sA);
 		
 	}
+	
 	public static void createIndex() throws CorruptIndexException, LockObtainFailedException, IOException {
 		IndexWriter indexWriter = new IndexWriter(directory, config);
-		File dir = new File("Directorio donde esta la info");
-		File[] files = dir.listFiles();
+		File dir = new File("1.txt");
+		Document document = new Document();
+
+		//String path = dir.getCanonicalPath();
+		document.add(new TextField("path", "‪C://Users//Agustin//git//ChatBot-LOL//TP Objetos//1.txt", Field.Store.YES));
+		
+		Reader reader = new FileReader(dir);
+		document.add(new TextField("Darius", reader));
+		indexWriter.addDocument(document);
+		
+		/*File[] files = dir.listFiles();
 		for (File file : files) {
 			Document document = new Document();
 
 			String path = file.getCanonicalPath();
 			document.add(new TextField("path", path, Field.Store.YES));
-
+			
 			Reader reader = new FileReader(file);
-			document.add(new TextField("Champs", reader));
+			document.add(new TextField("Darius", "OP TOP", Field.Store.YES));
 			indexWriter.addDocument(document);
-		}
+		}*/
 		indexWriter.close();
 	}
 
 	public static void searchIndex(String searchString, String content) throws IOException, ParseException {
-		System.out.println("Searching for '" + searchString + "'");
-		Directory directorio = new RAMDirectory();
+		String path = "";
+		System.out.println("Buscando " + searchString);
 		IndexReader indexReader = DirectoryReader.open(directory);
 		IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
@@ -75,17 +86,15 @@ public class Indexador {
 		for (int i = 0; i<hits.scoreDocs.length; i++) {
 			int documentId = hits.scoreDocs[i].doc;
 			Document d = indexSearcher.doc(documentId);
-			String path = d.get("path");
-			System.out.println("Hit: " + path);
+			path = d.get("path");
 		}
-
+		System.out.println("La ruta es: " + path);
 	}
 	
 	
 	public static void main(String[] args) throws IOException, ParseException {
 	
-		StandardAnalyzer standardAnalyzer = new StandardAnalyzer();
-		Directory directory = new RAMDirectory();
+		/*StandardAnalyzer standardAnalyzer = new StandardAnalyzer();
 		IndexWriterConfig config = new IndexWriterConfig(standardAnalyzer);
 	     
 	     //Create a writer
@@ -102,12 +111,14 @@ public class Indexador {
 	     IndexReader reader = DirectoryReader.open(directory);
 	     IndexSearcher searcher = new IndexSearcher (reader);
 	     QueryParser Champsparser = new QueryParser ("Champs", standardAnalyzer);
-	     QueryParser Itemsparser = new QueryParser ("Items", standardAnalyzer);
-	     QueryParser Runesparser = new QueryParser ("Runes", standardAnalyzer);
+	     //QueryParser Itemsparser = new QueryParser ("Items", standardAnalyzer);
+	     //QueryParser Runesparser = new QueryParser ("Runes", standardAnalyzer);
 	     Query query = Champsparser.parse("Darius");
-	     TopDocs results = searcher.search(query, 5);
+	     TopDocs results = searcher.search(query, 5);*/
+		Indexador i = new Indexador();
+		i.createIndex();
+		i.searchIndex("DUO_SUPPORT", "Darius");
 	     
-	   
     }
 }
 
