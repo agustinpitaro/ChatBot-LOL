@@ -1,6 +1,7 @@
 package Query;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -43,20 +45,26 @@ public class Indexador {
 	private static Directory directory ;
 	private static IndexWriterConfig config;
 	private static FileReader fr;
+	private static String actualFile;
 	private static HashMap<Integer, String> champsTranslator;
 	
 	public Indexador() throws IOException {
-		Indexador.sA = new StandardAnalyzer();
+		CharArraySet stopSet = CharArraySet.copy(StandardAnalyzer.STOP_WORDS_SET);
+		stopSet.add("el");
+	    stopSet.add("la");
+	    stopSet.add("las");
+	    stopSet.add('?');
+	    stopSet.add("de");
+	    stopSet.add("dame");
+		Indexador.sA = new StandardAnalyzer(stopSet);
 		Indexador.directory = new SimpleFSDirectory(Paths.get("‪Index"));
 		Indexador.config = new IndexWriterConfig(sA);
 		Indexador.champsTranslator = new HashMap<Integer, String>();
 	}
 	
-	
 	public static String getChampsTranslator(int id) {
 		return champsTranslator.get(id);
 	}
-
 
 	private static void ChampSetter() throws Exception {
 
@@ -65,8 +73,7 @@ public class Indexador {
 	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
 	     con.setRequestMethod("GET");
 	     con.setRequestProperty("User-Agent", "Mozilla/5.0");
-	     BufferedReader in = new BufferedReader(
-	             new InputStreamReader(con.getInputStream()));
+	     BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 	     String inputLine;
 	     StringBuffer response = new StringBuffer();
 	     while ((inputLine = in.readLine()) != null) {
@@ -129,15 +136,31 @@ public class Indexador {
 			Document d = indexSearcher.doc(documentId);
 			path = d.get("path");
 		}
+		actualFile = path;
 		System.out.println("La ruta es: " + path);
 	}
 	
+	public String simpleDataGetter(String file, String dato) throws IOException {
+		String data = "";
+		String line;
+		fr = new FileReader(file);
+		BufferedReader br = new BufferedReader(fr);
+		while ((line = br.readLine()) != null) {
+		       if (line.contains(dato)) {
+		    	   data = line.substring(0, line.length()-1);
+		       }
+		    }
+		br.close();
+		System.out.println(data);
+		return data;
+	}
 	
 	public static void main(String[] args) throws Exception {
 		
 		Indexador i = new Indexador();
-		i.createIndex();
-		i.searchIndex("TOP", "Darius");
+		//i.createIndex();
+		i.searchIndex("cuantos gamesPlayed", "555");
+		i.simpleDataGetter(actualFile, "gamesPlayed");
 	     
     }
 }

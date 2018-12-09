@@ -20,7 +20,7 @@ public class Client {
 	
 ;
 		   
-	public static void search(String asd) throws Exception {
+	public static void dbGenerator() throws Exception {
 		 String apiKey = "ec545d402ebd648449b6cf282cf288fb"; 
 		 String elo = "GOLD";
 		 String parameters = "kda,hashes";
@@ -39,7 +39,7 @@ public class Client {
 	     String inputLine;
 	     StringBuffer response = new StringBuffer();
 	     while ((inputLine = in.readLine()) != null) {
-	     	response.append(inputLine);
+	     	response.append(inputLine + '\n');
 	     }
 	     String entrada = response.toString();
 	     JSONArray array = new JSONArray(entrada); //Creo estructura de la consulta
@@ -48,7 +48,7 @@ public class Client {
 	     
 	     for (Object j : DataBase){
 	    	 Integer aux = (Integer) ((HashMap<String, Object>) j).get("championId");
-	    	 Utilities.createTxt(j.toString(), "C:/Users/Agustin/git/ChatBot-LOL/database/" + aux.toString() + ".txt");
+	    	 Utilities.createTxt(j.toString().replace("," , "," + System.lineSeparator()), "C:/Users/Agustin/git/ChatBot-LOL/database/" + aux.toString() + ".txt");
 	
 	     }
 

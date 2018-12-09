@@ -41,8 +41,8 @@ public class Interf extends JFrame implements KeyListener{
 	
 	private String[][] chatBot={
 		//standard greetings
-		{"hi","hello","hola","ola","howdy"},
-		{"hi","hello","hey"},
+		{"Hola","Hola!"},
+		{"Hola","hello","hey"},
 		//question greetings
 		{"how are you","how r you","how r u","how are u"},
 		{"good","doing well"},
@@ -158,10 +158,10 @@ public class Interf extends JFrame implements KeyListener{
 		boolean marca = false;
 		String resultado = "";
 		for(char c :linea.toCharArray()) {
-			if (c == '<')
+			if (c == '=')
 				marca = true;
 			else
-				if (c == '>')
+				if (c == ',')
 					marca = false;
 			if (marca == false && c !='>' && c != ' ')
 				resultado = resultado + c;
@@ -171,48 +171,6 @@ public class Interf extends JFrame implements KeyListener{
 		return resultado;
 	}
 	
-	public static void cleaner (String origen) throws IOException {
-	    FileReader fr = new FileReader(origen);
-	    BufferedReader br = new BufferedReader(fr);
-	    String linea;
-	    String result = "";
-        while((linea = br.readLine())!= null) {
-        	result = result + lineCleaner(linea);
-       }
-        try{                    
-            if( null != fr ){   
-               fr.close();     
-           		}                  
-         	}catch (Exception e2){ 
-         		e2.printStackTrace();
-         }
-        fileCreator(result, "D:\\limpio.txt");
-	}
-	
-	public static void fileCreator(String contenido, String rute) {   //Desde URL
-		try {
-        String ruta = rute;
-        File file = new File(ruta);
-        // Si el archivo no existe es creado
-        if (!file.exists()) {
-            file.createNewFile();
-        	}
-        FileWriter fw = new FileWriter(file);
-        BufferedWriter bw = new BufferedWriter(fw);
-        bw.write(contenido);
-        bw.close();
-		} catch (Exception e) {
-        e.printStackTrace();
-    	}
-	}
-	
-	public static void crawler (String url) throws IOException {
-		org.jsoup.nodes.Document d = Jsoup.connect(url).timeout(6000).get();
-		Elements e = d.select("td");
-		String set = e.toString();
-		fileCreator(set, "D:\\prueba.txt");
-		//cleaner("D:\\"+ url+".txt");
-	}
 	
 	public static String searcher (String rute) throws IOException {    //Busca los 5 mejores TOP desde un archivo
 		FileReader fr = new FileReader(rute);
@@ -236,7 +194,7 @@ public class Interf extends JFrame implements KeyListener{
 	
 	public static void main(String[] args) throws IOException {
 		new Interf();
-		//crawler("http://las.op.gg/champion/statistics");
+		
 		
 	        
 		}
