@@ -34,6 +34,7 @@ import org.apache.lucene.store.LockFactory;
 import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import Utilities.Utilities;
 
@@ -47,6 +48,7 @@ public class Indexador {
 	private static FileReader fr;
 	private static String actualFile;
 	private static HashMap<Integer, String> champsTranslator;
+	private static HashMap<Integer, String> itemsTranslator;
 	
 	public Indexador() throws IOException {
 		CharArraySet stopSet = CharArraySet.copy(StandardAnalyzer.STOP_WORDS_SET);
@@ -61,6 +63,11 @@ public class Indexador {
 		Indexador.config = new IndexWriterConfig(sA);
 		Indexador.champsTranslator = new HashMap<Integer, String>();
 	}
+	
+	public HashMap<Integer, String> getTranslator() {
+		return champsTranslator;
+	};
+	
 	
 	public static String getChampsTranslator(int id) {
 		return champsTranslator.get(id);
@@ -88,25 +95,51 @@ public class Indexador {
 	    	 Integer id = (Integer) ((HashMap<String, Object>) j).get("id");
 	    	 String name = (String) ((HashMap<String, Object>) j).get("name");
 	    	 champsTranslator.put(id, name);
-	    	
 	     }
 	   }
-
+	
+	private static void itemSetter() throws Exception{
+		String url = "http://ddragon.leagueoflegends.com/cdn/7.8.1/data/es_ES/item.json";
+		 URL obj = new URL(url);
+	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+	     con.setRequestMethod("GET");
+	     con.setRequestProperty("User-Agent", "Mozilla/5.0");
+	     BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+	     String inputLine;
+	     StringBuffer response = new StringBuffer();
+	     while ((inputLine = in.readLine()) != null) {
+	     	response.append(inputLine);
+	     }
+	     String entrada = response.toString();
+	     
+	     //Creo estructura de la consulta
+	     
+	     
+	     JSONObject asd = new JSONObject(entrada);
+	     JSONObject data = (JSONObject) asd.get("data");
+	     JSONObject prueba = (JSONObject) data.get("2009");
+	     System.out.println(prueba.get("name"));
+	     
+	     
+	     
+	     //JSONArray items = new JSONArray(entrada);
+	     
+	     
+	     /*List<Object> DataBase = Utilities.JSONArraytoList(items); //Convierto a Lista de Maps
+	     
+	     for (Object j : DataBase){
+	    	 Integer id = (Integer) ((HashMap<String, Object>) j).get("id");
+	    	 String name = (String) ((HashMap<String, Object>) j).get("name");
+	    	 itemsTranslator.put(id, name);
+	     }*/
+	}
+	
 	public static void createIndex() throws Exception {
 		
 		ChampSetter();
 		
 		IndexWriter indexWriter = new IndexWriter(directory, config);
 		File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
-		/*Document document = new Document();
-
-		String path = dir.getCanonicalPath();
-		document.add(new TextField("path", path , Field.Store.YES));
-		
-		Reader reader = new FileReader(dir);
-		document.add(new TextField("Darius", reader));
-		indexWriter.addDocument(document);*/
-		
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			Document document = new Document();
@@ -120,7 +153,7 @@ public class Indexador {
 		indexWriter.close();
 	}
 
-	public static void searchIndex(String searchString, String content) throws IOException, ParseException {
+	public static String searchIndex(String searchString, String content) throws IOException, ParseException {
 		String path = "";
 		System.out.println("Buscando " + searchString);
 		IndexReader indexReader = DirectoryReader.open(directory);
@@ -136,8 +169,8 @@ public class Indexador {
 			Document d = indexSearcher.doc(documentId);
 			path = d.get("path");
 		}
-		actualFile = path;
-		System.out.println("La ruta es: " + path);
+		System.out.println(path);
+		return path;
 	}
 	
 	public String simpleDataGetter(String file, String dato) throws IOException {
@@ -158,10 +191,12 @@ public class Indexador {
 	public static void main(String[] args) throws Exception {
 		
 		Indexador i = new Indexador();
+		ImageGetter img = new ImageGetter();
 		//i.createIndex();
-		i.searchIndex("cuantos gamesPlayed", "555");
-		i.simpleDataGetter(actualFile, "gamesPlayed");
-	     
+		//i.searchIndex("cuantos gamesPlayed 555", "15");
+		//i.simpleDataGetter(actualFile, "gamesPlayed");
+	    //i.itemSetter();
+		img.getChampImage("Neeko");
     }
 }
 

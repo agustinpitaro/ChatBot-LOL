@@ -1,59 +1,72 @@
 package Query;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Collection;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import Utilities.*;
+import org.apache.lucene.queryparser.classic.ParseException;
 
 public class Client {
 	
-;
-		   
-	public static void dbGenerator() throws Exception {
-		 String apiKey = "ec545d402ebd648449b6cf282cf288fb"; 
-		 String elo = "GOLD";
-		 String parameters = "kda,hashes";
-	     String url = "http://api.champion.gg/v2/champions?elo=" + elo + "&champData=" + parameters +"&limit=200&api_key=" + apiKey;
-		 URL obj = new URL(url);
-	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-	     // optional default is GET
-	     con.setRequestMethod("GET");
-	     //add request header
-	     con.setRequestProperty("User-Agent", "Mozilla/5.0");
-	     int responseCode = con.getResponseCode();
-	     System.out.println("\nSending 'GET' request to URL : " + url);
-	     System.out.println("Response Code : " + responseCode);
-	     BufferedReader in = new BufferedReader(
-	             new InputStreamReader(con.getInputStream()));
-	     String inputLine;
-	     StringBuffer response = new StringBuffer();
-	     while ((inputLine = in.readLine()) != null) {
-	     	response.append(inputLine + '\n');
-	     }
-	     String entrada = response.toString();
-	     JSONArray array = new JSONArray(entrada); //Creo estructura de la consulta
-	     
-	     List<Object> DataBase = Utilities.JSONArraytoList(array); //Convierto a Lista de Maps
-	     
-	     for (Object j : DataBase){
-	    	 Integer aux = (Integer) ((HashMap<String, Object>) j).get("championId");
-	    	 Utilities.createTxt(j.toString().replace("," , "," + System.lineSeparator()), "C:/Users/Agustin/git/ChatBot-LOL/database/" + aux.toString() + ".txt");
+	private String actualFile;
+	private String actualChamp;
+	private Indexador ind;
+	private ArrayList<String> queryData;
+		 
 	
-	     }
-
-	    // Utilities.createTxt(entrada, "");
-	   }
+	public Client (Indexador i) {
+		this.ind = i;
+		queryData = new ArrayList();
+		this.actualFile = "";
+	}
+	
+	public void queryDataArraySetter() {
+		queryData.add("kills");
+		queryData.add("role");
+		queryData.add("winrate");
+		queryData.add("wins");
+		queryData.add("items");
+		queryData.add("skill");
+		queryData.add("gamesPlayed");
+		queryData.add("playRate");
+	}
+	
+	public String talk(String quote) throws IOException, ParseException {
+		String data = "";
+		String response = "";
+		Boolean wantsData = false;
+		Collection<String> champs = ind.getTranslator().values();
+		
+		while(quote.charAt(quote.length()-1)=='!' || quote.charAt(quote.length()-1)=='.' ||quote.charAt(quote.length()-1)=='?'){
+				quote=quote.substring(0,quote.length()-1);
+			}
+		
+			quote.toLowerCase();
+			quote.trim();
+			
+		
+			for(String champ : champs)
+				if(quote.contains(champ))
+					actualChamp = champ;
+			for(String value : queryData)
+				if(quote.contains(value)) {
+					data = value;
+					wantsData = true;
+				}
+			if(wantsData) {
+				response = query(data);
+			}
+			response = "No entiendo ¿qué quieres decir?";
+	return response;		
+	}
+	
+	public String query(String data) throws IOException, ParseException {
+		String output = "";
+		this.actualFile = ind.searchIndex(data, actualChamp);
+		output = ind.simpleDataGetter(actualFile, data);
+		return output;
+	}
+	
 }
 
 
