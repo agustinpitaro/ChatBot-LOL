@@ -11,10 +11,10 @@ import org.json.JSONArray;
 
 public class DBGenerator {
 
-	public static void dbGenerator() throws Exception 
+	public static void dbGenerator(String elo) throws Exception 
 		{
 			 String apiKey = "ec545d402ebd648449b6cf282cf288fb"; 
-			 String elo = "GOLD";
+			 //'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'PLATINUM,DIAMOND,MASTER,CHALLENGER'
 			 String parameters = "kda,hashes";
 		     String url = "http://api.champion.gg/v2/champions?elo=" + elo + "&champData=" + parameters +"&limit=200&api_key=" + apiKey;
 			 URL obj = new URL(url);

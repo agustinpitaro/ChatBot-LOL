@@ -137,6 +137,7 @@ public class Indexador {
 	public static void createIndex() throws Exception {
 		
 		ChampSetter();
+		itemSetter();
 		
 		IndexWriter indexWriter = new IndexWriter(directory, config);
 		File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
@@ -170,6 +171,7 @@ public class Indexador {
 			path = d.get("path");
 		}
 		System.out.println(path);
+		actualFile = path;
 		return path;
 	}
 	
@@ -193,10 +195,10 @@ public class Indexador {
 		Indexador i = new Indexador();
 		ImageGetter img = new ImageGetter();
 		//i.createIndex();
-		//i.searchIndex("cuantos gamesPlayed 555", "15");
-		//i.simpleDataGetter(actualFile, "gamesPlayed");
+		i.searchIndex("cuantos gamesPlayed 555", "15");
+		i.simpleDataGetter(actualFile, "gamesPlayed");
 	    //i.itemSetter();
-		img.getChampImage("Neeko");
+		//img.getChampImage("Pyke");
     }
 }
 

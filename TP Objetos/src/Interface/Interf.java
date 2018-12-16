@@ -37,8 +37,7 @@ public class Interf extends JFrame implements KeyListener{
 		JScrollPane.HORIZONTAL_SCROLLBAR_NEVER
 	);
 	
-	
-	
+
 	private String[][] chatBot={
 		//standard greetings
 		{"Hola","Hola!"},

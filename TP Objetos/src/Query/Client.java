@@ -44,7 +44,6 @@ public class Client {
 			quote.toLowerCase();
 			quote.trim();
 			
-		
 			for(String champ : champs)
 				if(quote.contains(champ))
 					actualChamp = champ;
@@ -57,7 +56,7 @@ public class Client {
 				response = query(data);
 			}
 			response = "No entiendo ¿qué quieres decir?";
-	return response;		
+	   return response;		
 	}
 	
 	public String query(String data) throws IOException, ParseException {

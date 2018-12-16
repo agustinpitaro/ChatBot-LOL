@@ -14,7 +14,7 @@ public class SummonerExample {
 		ApiConfig config = new ApiConfig().setKey("RGAPI-bf66375c-0024-4e30-b279-7b1c2a5a414f");
 		RiotApi api = new RiotApi(config);
 
-		Summoner summoner = api.getSummonerByName(Platform.LAS,"UnluckyBoy");
+		Summoner summoner = api.getSummonerByName(Platform.LAS,"KidSO");
 		System.out.println("Name: " + summoner.getName());
 		System.out.println("Summoner ID: " + summoner.getId());
 		System.out.println("Account ID: " + summoner.getAccountId());
