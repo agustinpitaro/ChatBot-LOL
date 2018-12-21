@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JButton;
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
@@ -23,6 +25,8 @@ import javax.swing.Action;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.awt.Color;
+import java.awt.Toolkit;
 
 public class GameChooserWindow {
 
@@ -57,11 +61,12 @@ public class GameChooserWindow {
 	 */
 	private void initialize() {
 		frmChooseYourDestiny = new JFrame();
+		frmChooseYourDestiny.setIconImage(Toolkit.getDefaultToolkit().getImage(new File("").getAbsoluteFile() + "/TP Objetos/src/icono.png"));
+		frmChooseYourDestiny.getContentPane().setBackground(new Color(51, 51, 51));
 		frmChooseYourDestiny.setTitle("Choose your destiny!");
 		frmChooseYourDestiny.setBounds(100, 100, 450, 300);
 		frmChooseYourDestiny.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmChooseYourDestiny.getContentPane().setLayout(null);
-		
 		JButton BotonLOL = new JButton("");
 		BotonLOL.addMouseListener(new MouseAdapter() {
 			@Override
@@ -94,11 +99,11 @@ public class GameChooserWindow {
 		frmChooseYourDestiny.getContentPane().add(BotonHS);
 		
 		ChooseTxt = new JTextField();
-		ChooseTxt.setFont(new Font("Franklin Gothic Medium", Font.BOLD, 18));
+		ChooseTxt.setFont(new Font("Verdana", Font.BOLD, 18));
 		ChooseTxt.setEditable(false);
 		ChooseTxt.setHorizontalAlignment(SwingConstants.CENTER);
 		ChooseTxt.setText("Elije tu juego");
-		ChooseTxt.setBounds(126, 0, 161, 28);
+		ChooseTxt.setBounds(126, 0, 161, 34);
 		frmChooseYourDestiny.getContentPane().add(ChooseTxt);
 		ChooseTxt.setColumns(10);
 	}

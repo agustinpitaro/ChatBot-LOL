@@ -21,6 +21,11 @@ import java.io.IOException;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.Color;
+import javax.swing.UIManager;
+import java.awt.SystemColor;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.LineBorder;
 
 
 
@@ -46,7 +51,7 @@ public class ChatWindow {
 			}
 		});
 		frame.setBounds(100, 100, 695, 585);
-
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(new File("").getAbsoluteFile() + "/TP Objetos/src/icono.png"));
 		frame.setTitle("ChatBot-LoL ");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -57,11 +62,17 @@ public class ChatWindow {
 		frame.getContentPane().add(scrollPane);
 		
 		final JTextArea Chat = new JTextArea();
+		Chat.setFont(new Font("Verdana", Font.PLAIN, 13));
+		Chat.setBackground(UIManager.getColor("Button.light"));
 		Chat.setEditable(false);
 		scrollPane.setViewportView(Chat);
 		
 		final JTextArea input = new JTextArea();
-		input.setFont(new Font("Verdana", Font.PLAIN, 13));
+		input.setBorder(new LineBorder(new Color(0, 0, 0)));
+		input.setLineWrap(true);
+		input.setForeground(SystemColor.desktop);
+		input.setBackground(UIManager.getColor("CheckBox.background"));
+		input.setFont(new Font("Verdana", Font.PLAIN, 14));
 		input.setBounds(0, 503, 679, 43);
 		frame.getContentPane().add(input);
 		input.addKeyListener(
