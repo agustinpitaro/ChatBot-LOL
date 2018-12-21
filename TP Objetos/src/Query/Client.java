@@ -14,7 +14,7 @@ public class Client {
 	private Indexador ind;
 	private ArrayList<String> queryData;
 		 
-	
+	//Inicializador
 	public Client (Indexador i) {
 		this.ind = i;
 		queryData = new ArrayList<String>();
@@ -23,6 +23,7 @@ public class Client {
 		queryDataArraySetter();
 	}
 	
+	//Palabras clave soportadas por el chatbot
 	private void queryDataArraySetter() {
 		queryData.add("kills");
 		queryData.add("role");
@@ -34,6 +35,7 @@ public class Client {
 		queryData.add("playRate");
 	}
 	
+	//Método para interaccionar con el usuario
 	public String talk(String input) throws Exception {
 		String data = "";
 		String response = "";
@@ -80,6 +82,7 @@ public class Client {
 	   return response;		
 	}
 	
+	//Método buscador de datos requeridos
 	public String query(String data) throws Exception {
 		String output = "";
 		this.actualFile = ind.searchIndex(data, actualChampId.toString());

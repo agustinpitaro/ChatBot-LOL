@@ -5,9 +5,7 @@ import net.rithms.riot.api.RiotApiException;
 import net.rithms.riot.api.endpoints.summoner.dto.Summoner;
 import net.rithms.riot.constant.Platform;
 
-/**
- * This example demonstrates using the RiotApi to request summoner information for a given summoner name
- */
+//Devuelve datos de cuenta de usuario. (Para futuras extensiones del proyecto)
 public class SummonerExample {
 
 	public static void main(String[] args) throws RiotApiException {

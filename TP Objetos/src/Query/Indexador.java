@@ -51,6 +51,7 @@ public class Indexador {
 	private static HashMap<Integer, String> champsTranslator;
 	private static HashMap<Integer, String> itemsTranslator;
 	
+	
 	public Indexador() throws IOException {
 		CharArraySet stopSet = CharArraySet.copy(StandardAnalyzer.STOP_WORDS_SET);
 		stopSet.add("el");
@@ -71,10 +72,12 @@ public class Indexador {
 		}
 	}
 	
+	//Devuelve el traductor
 	public HashMap<Integer, String> getTranslator() {
 		return champsTranslator;
 	};
 	
+	//Obtiene el ID de los campeones segun su nombre
 	public Integer getChamp(String champ) {		
 		    for (Entry<Integer, String> entry : champsTranslator.entrySet()) {
 		        if (champ.equals(entry.getValue())) {
@@ -84,11 +87,12 @@ public class Indexador {
 		    return null;
 		}
 	
-	
+	//Obtiene los nombres de los campeones segun su ID
 	public static String getChampsTranslator(int id) {
 		return champsTranslator.get(id);
 	}
-
+	
+	//Genera el traductor (ID - Nombre de campeón)
 	private static void ChampSetter() throws Exception {
 
 	     String url = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json";
@@ -114,6 +118,7 @@ public class Indexador {
 	     }
 	   }
 	
+	//Obtiene los nombres de items segun su ID
 	public static String itemGetter(String itemId) throws Exception{
 		String url = "http://ddragon.leagueoflegends.com/cdn/7.8.1/data/es_ES/item.json";
 		 URL obj = new URL(url);
@@ -140,6 +145,7 @@ public class Indexador {
 	    
 	}
 	
+	//Crea el indice de campeones con sus datos
 	public static void createIndex() throws Exception {
 		
 		
@@ -157,7 +163,8 @@ public class Indexador {
 		}
 		indexWriter.close();
 	}
-
+	
+	//Busca el archivo donde está el dato
 	public static String searchIndex(String searchString, String content) throws IOException, ParseException {
 		String path = "";
 		IndexReader indexReader = DirectoryReader.open(directory);
@@ -176,6 +183,7 @@ public class Indexador {
 		return path;
 	}
 	
+	//Busca el dato en el archivo
 	public String simpleDataGetter(String file, String dato) throws Exception {
 		String data = "";
 		String line;
