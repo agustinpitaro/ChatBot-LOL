@@ -149,8 +149,7 @@ public class Indexador {
 		
 		
 		IndexWriter indexWriter = new IndexWriter(directory, config);
-		//File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
-		File dir = new File("C:/ChatBot_database/");
+		File dir = new File( new File("").getAbsoluteFile() + "/Database/" );
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			Document document = new Document();

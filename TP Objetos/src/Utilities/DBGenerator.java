@@ -1,6 +1,7 @@
 package Utilities;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -39,7 +40,7 @@ public class DBGenerator {
 		     
 		     for (Object j : DataBase){
 		    	 Integer aux = (Integer) ((HashMap<String, Object>) j).get("championId");
-		    	 Utilities.createTxt(j.toString().replace("," , "," + System.lineSeparator()), "C:/ChatBot_database/" + aux.toString() + ".txt");
+		    	 Utilities.createTxt(j.toString().replace("," , "," + System.lineSeparator()), new File("").getAbsoluteFile() + "/Database/" + aux.toString() + ".txt");
 		     }
 		   }
 }

@@ -1,6 +1,9 @@
 package Interface;
 
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -13,7 +16,9 @@ import Utilities.DBGenerator;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
+import java.awt.Font;
 
 
 
@@ -31,8 +36,9 @@ public class ChatWindow {
 
 
 	private void initialize() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame();
-		frame.setBounds(100, 100, 464, 340);
+		frame.setBounds(100, 100, 695, 585);
 
 		frame.setTitle("ChatBot-LoL ");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,15 +46,16 @@ public class ChatWindow {
 
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 428, 237);
+		scrollPane.setBounds(0, 0, 679, 500);
 		frame.getContentPane().add(scrollPane);
 		
 		final JTextArea Chat = new JTextArea();
-		scrollPane.setViewportView(Chat);
 		Chat.setEditable(false);
+		scrollPane.setViewportView(Chat);
 		
 		final JTextArea input = new JTextArea();
-		input.setBounds(10, 259, 428, 32);
+		input.setFont(new Font("Verdana", Font.PLAIN, 13));
+		input.setBounds(0, 503, 679, 43);
 		frame.getContentPane().add(input);
 		input.addKeyListener(
 								new KeyAdapter() {
