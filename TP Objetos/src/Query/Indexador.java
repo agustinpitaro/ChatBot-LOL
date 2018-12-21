@@ -1,27 +1,23 @@
 package Query;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
@@ -30,9 +26,6 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.store.LockFactory;
-import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,10 +40,10 @@ public class Indexador {
 	private static Directory directory ;
 	private static IndexWriterConfig config;
 	private static FileReader fr;
-	private static String actualFile;
 	private static HashMap<Integer, String> champsTranslator;
 	
 	
+	@SuppressWarnings("deprecation")
 	public Indexador() throws IOException {
 		CharArraySet stopSet = CharArraySet.copy(StandardAnalyzer.STOP_WORDS_SET);
 		stopSet.add("el");
@@ -92,6 +85,7 @@ public class Indexador {
 	}
 	
 	//Genera el traductor (ID - Nombre de campeón)
+	@SuppressWarnings("unchecked")
 	private static void ChampSetter() throws Exception {
 
 	     String url = "http://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/champion-summary.json";
@@ -144,7 +138,7 @@ public class Indexador {
 	    
 	}
 	//Crea el indice de campeones con sus datos
-	public static void createIndex() throws Exception {
+	public void createIndex() throws Exception {
 		
 		
 		IndexWriter indexWriter = new IndexWriter(directory, config);
@@ -163,7 +157,7 @@ public class Indexador {
 	}
 	
 	//Busca el archivo donde está el dato
-	public static String searchIndex(String searchString, String content) throws IOException, ParseException {
+	public String searchIndex(String searchString, String content) throws IOException, ParseException {
 		String path = "";
 		IndexReader indexReader = DirectoryReader.open(directory);
 		IndexSearcher indexSearcher = new IndexSearcher(indexReader);
@@ -177,7 +171,6 @@ public class Indexador {
 			Document d = indexSearcher.doc(documentId);
 			path = d.get("path");
 		}
-		actualFile = path;
 		return path;
 	}
 	

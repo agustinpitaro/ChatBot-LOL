@@ -13,6 +13,7 @@ import org.json.JSONArray;
 public class DBGenerator {
 
 	//Genera la base de datos desde la cual se genera el indice.
+	@SuppressWarnings("unchecked")
 	public DBGenerator(String elo) throws Exception 
 		{
 			 String apiKey = "ec545d402ebd648449b6cf282cf288fb"; 

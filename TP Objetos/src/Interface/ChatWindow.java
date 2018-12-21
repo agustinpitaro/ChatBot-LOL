@@ -1,6 +1,5 @@
 package Interface;
 
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Toolkit;
 
@@ -24,7 +23,6 @@ import java.awt.event.WindowEvent;
 import java.awt.Color;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
-import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 
 
@@ -34,6 +32,7 @@ public class ChatWindow {
 	private JFrame frame;
 	private static Indexador indexer;
 	private static Client client;
+	@SuppressWarnings("unused")
 	private static DBGenerator dbg;
 
 	

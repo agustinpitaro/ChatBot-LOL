@@ -43,6 +43,7 @@ public class Utilities {
 	    return retMap;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Map<String, Object> JArraytoMap(JSONObject object) throws JSONException {
 	    Map<String, Object> map = new HashMap<String, Object>();
 

@@ -4,24 +4,12 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JButton;
-import java.awt.BorderLayout;
 import java.awt.Font;
-import java.awt.Image;
-
-import javax.swing.JPanel;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
-import Query.Indexador;
-import Utilities.DBGenerator;
 
-import javax.swing.JLabel;
-import javax.swing.JSplitPane;
-import java.awt.Panel;
 import javax.swing.JTextField;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
