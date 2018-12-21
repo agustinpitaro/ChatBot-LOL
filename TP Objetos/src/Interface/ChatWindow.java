@@ -19,6 +19,8 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.awt.Font;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 
@@ -36,8 +38,13 @@ public class ChatWindow {
 
 
 	private void initialize() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		frame = new JFrame();
+		frame.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				indexer.clear();
+			}
+		});
 		frame.setBounds(100, 100, 695, 585);
 
 		frame.setTitle("ChatBot-LoL ");
@@ -133,7 +140,6 @@ public class ChatWindow {
 				}
 			}
 		});
-		
 		
 	}
 }

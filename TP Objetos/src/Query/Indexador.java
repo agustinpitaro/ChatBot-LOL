@@ -60,7 +60,7 @@ public class Indexador {
 	    stopSet.add("de");
 	    stopSet.add("dame");
 		Indexador.sA = new StandardAnalyzer(stopSet);
-		Indexador.directory = new SimpleFSDirectory(Paths.get("‪Index"));
+		Indexador.directory = new SimpleFSDirectory(Paths.get("Index"));
 		Indexador.config = new IndexWriterConfig(sA);
 		Indexador.champsTranslator = new HashMap<Integer, String>();
 		try {
@@ -143,7 +143,6 @@ public class Indexador {
 	     return output;
 	    
 	}
-	
 	//Crea el indice de campeones con sus datos
 	public static void createIndex() throws Exception {
 		
@@ -231,6 +230,24 @@ public class Indexador {
 	
 		br.close();
 		return data;
+	}
+
+	public void clear() {
+		File dir = new File( new File("").getAbsoluteFile() + "/Database/" );
+		String[]entries = dir.list();
+		for(String s: entries){
+		    File currentFile = new File(dir.getPath(),s);
+		    currentFile.delete();
+		}
+		dir.delete();
+		
+		File dir2 = new File( new File("").getAbsoluteFile() + "/Index/" );
+		String[]entries2 = dir2.list();
+		for(String s: entries2){
+		    File currentFile = new File(dir2.getPath(),s);
+		    currentFile.delete();
+		}
+		dir2.delete();
 	}
 	
 }
