@@ -12,7 +12,7 @@ import org.json.JSONArray;
 public class DBGenerator {
 
 	//Genera la base de datos desde la cual se genera el indice.
-	public static void dbGenerator(String elo) throws Exception 
+	public DBGenerator(String elo) throws Exception 
 		{
 			 String apiKey = "ec545d402ebd648449b6cf282cf288fb"; 
 			 //'BRONZE', 'SILVER', 'GOLD', 'PLATINUM', 'PLATINUM,DIAMOND,MASTER,CHALLENGER'
@@ -20,9 +20,7 @@ public class DBGenerator {
 		     String url = "http://api.champion.gg/v2/champions?elo=" + elo + "&champData=" + parameters +"&limit=200&api_key=" + apiKey;
 			 URL obj = new URL(url);
 		     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-		     // optional default is GET
 		     con.setRequestMethod("GET");
-		     //add request header
 		     con.setRequestProperty("User-Agent", "Mozilla/5.0");
 		     int responseCode = con.getResponseCode();
 		     System.out.println("\nSending 'GET' request to URL : " + url);
@@ -41,10 +39,7 @@ public class DBGenerator {
 		     
 		     for (Object j : DataBase){
 		    	 Integer aux = (Integer) ((HashMap<String, Object>) j).get("championId");
-		    	 Utilities.createTxt(j.toString().replace("," , "," + System.lineSeparator()), "C:/Users/Agustin/git/ChatBot-LOL/database/" + aux.toString() + ".txt");
-		
+		    	 Utilities.createTxt(j.toString().replace("," , "," + System.lineSeparator()), "C:/ChatBot_database/" + aux.toString() + ".txt");
 		     }
 		   }
-
-
 }

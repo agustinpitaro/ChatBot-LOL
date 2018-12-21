@@ -49,7 +49,6 @@ public class Indexador {
 	private static FileReader fr;
 	private static String actualFile;
 	private static HashMap<Integer, String> champsTranslator;
-	private static HashMap<Integer, String> itemsTranslator;
 	
 	
 	public Indexador() throws IOException {
@@ -150,7 +149,8 @@ public class Indexador {
 		
 		
 		IndexWriter indexWriter = new IndexWriter(directory, config);
-		File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
+		//File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
+		File dir = new File("C:/ChatBot_database/");
 		File[] files = dir.listFiles();
 		for (File file : files) {
 			Document document = new Document();

@@ -1,10 +1,8 @@
 package Query;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.apache.lucene.queryparser.classic.ParseException;
 
 public class Client {
 	
@@ -75,7 +73,7 @@ public class Client {
 				response = "No entiendo ¿qué quieres decir?";
 			}
 			
-			if (input.equals("hola")) {
+			if (input.contains("hola")) {
 				response = "Hola! Que deseas saber?";
 			}
 			
