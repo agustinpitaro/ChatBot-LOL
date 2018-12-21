@@ -123,12 +123,10 @@ public class ChatWindow {
 	
 	public static void main(String[] args) throws Exception {
 		
-		dbg = new DBGenerator("GOLD");        //Generación base de datos
+		dbg = new DBGenerator("");        //Generación base de datos
 		indexer = new Indexador();
 		client = new Client(indexer);
-			
 		indexer.createIndex();                //Creación del indice
-			
 			
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -140,6 +138,5 @@ public class ChatWindow {
 				}
 			}
 		});
-		
 	}
 }

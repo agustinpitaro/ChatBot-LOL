@@ -208,16 +208,17 @@ public class Indexador {
 		}
 		if (dato.equals("items")) {
 			data = data.substring(5, data.length()-2);
-			String items = "-";
+			String items = "";
 			String buffer = "";
 			for(int i = 0; i<data.length();i++) {
 				if (data.charAt(i) != '-') {
 					 buffer = buffer + data.charAt(i); 
 				}else {
-					items = items + this.itemGetter(buffer) + "-";
+					items = items + itemGetter(buffer) + "-";
 					buffer = "";
 				}
 			}
+			if (buffer != "") items = items + itemGetter(buffer);
 			data = "los items mas viables son " + items;
 		}
 		if (dato.equals("winrate")) {

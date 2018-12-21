@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 
 public class GameChooserWindow {
 
@@ -66,10 +67,8 @@ public class GameChooserWindow {
 			@Override
 			public void mouseReleased(MouseEvent arg0) {
 				try {
-				//	DBGenerator.dbGenerator("PLATINUM,DIAMOND,MASTER,CHALLENGER");
-				//	Indexador.createIndex();
-					ChatWindow.main(null);
 					frmChooseYourDestiny.dispose();
+					ChatWindow.main(null);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -77,8 +76,8 @@ public class GameChooserWindow {
 			}
 		});
 		BotonLOL.setHorizontalAlignment(SwingConstants.CENTER);
-		BotonLOL.setIcon(new ImageIcon("C:\\Users\\Agustin\\git\\ChatBot-LOL\\Fondo lol3.jpg"));
-		BotonLOL.setBounds(0, 39, 220, 190);
+		BotonLOL.setIcon(new ImageIcon(new File("").getAbsoluteFile() + "/TP Objetos/src/LoL.jpg" ));
+		BotonLOL.setBounds(0, 39, 220, 211);
 		frmChooseYourDestiny.getContentPane().add(BotonLOL);
 		
 		JButton BotonHS = new JButton("");
@@ -90,8 +89,8 @@ public class GameChooserWindow {
 		});
 		BotonHS.setVerticalAlignment(SwingConstants.TOP);
 		BotonHS.setHorizontalAlignment(SwingConstants.CENTER);
-		BotonHS.setIcon(new ImageIcon("C:\\Users\\Agustin\\git\\ChatBot-LOL\\sadsa.png"));
-		BotonHS.setBounds(230, 39, 204, 201);
+		BotonHS.setIcon(new ImageIcon(new File("").getAbsoluteFile() + "/TP Objetos/src/Hearthstone.jpg"));
+		BotonHS.setBounds(219, 39, 215, 211);
 		frmChooseYourDestiny.getContentPane().add(BotonHS);
 		
 		ChooseTxt = new JTextField();
