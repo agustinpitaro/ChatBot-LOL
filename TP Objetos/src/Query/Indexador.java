@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.CharArraySet;
@@ -62,11 +63,26 @@ public class Indexador {
 		Indexador.directory = new SimpleFSDirectory(Paths.get("‪Index"));
 		Indexador.config = new IndexWriterConfig(sA);
 		Indexador.champsTranslator = new HashMap<Integer, String>();
+		try {
+			ChampSetter();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public HashMap<Integer, String> getTranslator() {
 		return champsTranslator;
 	};
+	
+	public Integer getChamp(String champ) {		
+		    for (Entry<Integer, String> entry : champsTranslator.entrySet()) {
+		        if (champ.equals(entry.getValue())) {
+		            return entry.getKey();
+		        }
+		    }
+		    return null;
+		}
 	
 	
 	public static String getChampsTranslator(int id) {
@@ -94,11 +110,11 @@ public class Indexador {
 	     for (Object j : DataBase){
 	    	 Integer id = (Integer) ((HashMap<String, Object>) j).get("id");
 	    	 String name = (String) ((HashMap<String, Object>) j).get("name");
-	    	 champsTranslator.put(id, name);
+	    	 champsTranslator.put(id, name.toLowerCase());
 	     }
 	   }
 	
-	private static void itemSetter() throws Exception{
+	public static String itemGetter(String itemId) throws Exception{
 		String url = "http://ddragon.leagueoflegends.com/cdn/7.8.1/data/es_ES/item.json";
 		 URL obj = new URL(url);
 	     HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -112,32 +128,20 @@ public class Indexador {
 	     }
 	     String entrada = response.toString();
 	     
-	     //Creo estructura de la consulta
-	     
+	    
+	     String output = "";
 	     
 	     JSONObject asd = new JSONObject(entrada);
 	     JSONObject data = (JSONObject) asd.get("data");
-	     JSONObject prueba = (JSONObject) data.get("2009");
-	     System.out.println(prueba.get("name"));
+	     JSONObject prueba = (JSONObject) data.get(itemId);
+	     output = prueba.get("name").toString();
 	     
-	     
-	     
-	     //JSONArray items = new JSONArray(entrada);
-	     
-	     
-	     /*List<Object> DataBase = Utilities.JSONArraytoList(items); //Convierto a Lista de Maps
-	     
-	     for (Object j : DataBase){
-	    	 Integer id = (Integer) ((HashMap<String, Object>) j).get("id");
-	    	 String name = (String) ((HashMap<String, Object>) j).get("name");
-	    	 itemsTranslator.put(id, name);
-	     }*/
+	     return output;
+	    
 	}
 	
 	public static void createIndex() throws Exception {
 		
-		ChampSetter();
-		itemSetter();
 		
 		IndexWriter indexWriter = new IndexWriter(directory, config);
 		File dir = new File("C:/Users/Agustin/git/ChatBot-LOL/database/");
@@ -156,37 +160,66 @@ public class Indexador {
 
 	public static String searchIndex(String searchString, String content) throws IOException, ParseException {
 		String path = "";
-		System.out.println("Buscando " + searchString);
 		IndexReader indexReader = DirectoryReader.open(directory);
 		IndexSearcher indexSearcher = new IndexSearcher(indexReader);
 
 		QueryParser queryParser = new QueryParser(content, sA);
 		Query query = queryParser.parse(searchString);
 		TopDocs hits = indexSearcher.search(query, 5);
-		System.out.println("Number of hits: " + hits.totalHits);
 
 		for (int i = 0; i<hits.scoreDocs.length; i++) {
 			int documentId = hits.scoreDocs[i].doc;
 			Document d = indexSearcher.doc(documentId);
 			path = d.get("path");
 		}
-		System.out.println(path);
 		actualFile = path;
 		return path;
 	}
 	
-	public String simpleDataGetter(String file, String dato) throws IOException {
+	public String simpleDataGetter(String file, String dato) throws Exception {
 		String data = "";
 		String line;
 		fr = new FileReader(file);
+		int inicio = dato.length()+2;
 		BufferedReader br = new BufferedReader(fr);
 		while ((line = br.readLine()) != null) {
 		       if (line.contains(dato)) {
-		    	   data = line.substring(0, line.length()-1);
+		    	   data = line.substring(inicio, line.length()-1);
 		       }
 		    }
+		
+		if (dato.equals("skill")) {
+			data = "el skillpath es " + data.substring(5, data.length()-2);
+		}
+		if (dato.equals("wins")) {
+			data = "las wins son " + data.substring(16, data.length());
+		}
+		if (dato.equals("role")) {
+			data = "el rol principal es " + data.substring(0, data.length()-1);
+		}
+		if (dato.equals("items")) {
+			data = data.substring(5, data.length()-2);
+			String items = "-";
+			String buffer = "";
+			for(int i = 0; i<data.length();i++) {
+				if (data.charAt(i) != '-') {
+					 buffer = buffer + data.charAt(i); 
+				}else {
+					items = items + this.itemGetter(buffer) + "-";
+					buffer = "";
+				}
+			}
+			data = "los items mas viables son " + items;
+		}
+		if (dato.equals("winrate")) {
+			data = "el winrate es " + data;
+		}
+		
+		if (dato.equals("gamesPlayed")) {
+			data = "la cantidad juegos jugados son " + data;
+		}
+	
 		br.close();
-		System.out.println(data);
 		return data;
 	}
 	

@@ -9,6 +9,7 @@ import org.apache.lucene.queryparser.classic.ParseException;
 public class Client {
 	
 	private String actualFile;
+	private Integer actualChampId;
 	private String actualChamp;
 	private Indexador ind;
 	private ArrayList<String> queryData;
@@ -16,55 +17,89 @@ public class Client {
 	
 	public Client (Indexador i) {
 		this.ind = i;
-		queryData = new ArrayList();
+		queryData = new ArrayList<String>();
 		this.actualFile = "";
+		this.actualChampId = 0;
+		queryDataArraySetter();
 	}
 	
-	public void queryDataArraySetter() {
+	private void queryDataArraySetter() {
 		queryData.add("kills");
 		queryData.add("role");
 		queryData.add("winrate");
 		queryData.add("wins");
 		queryData.add("items");
 		queryData.add("skill");
-		queryData.add("gamesPlayed");
+		queryData.add("juegos jugados");
 		queryData.add("playRate");
 	}
 	
-	public String talk(String quote) throws IOException, ParseException {
+	public String talk(String input) throws Exception {
 		String data = "";
 		String response = "";
 		Boolean wantsData = false;
 		Collection<String> champs = ind.getTranslator().values();
+	
 		
-		while(quote.charAt(quote.length()-1)=='!' || quote.charAt(quote.length()-1)=='.' ||quote.charAt(quote.length()-1)=='?'){
-				quote=quote.substring(0,quote.length()-1);
+		while(input.charAt(input.length()-1)=='!' || input.charAt(input.length()-1)=='.' || input.charAt(input.length()-1)=='?'){
+			input=input.substring(0,input.length()-1);
 			}
 		
-			quote.toLowerCase();
-			quote.trim();
+		input.toLowerCase();
+		input.trim();
 			
-			for(String champ : champs)
-				if(quote.contains(champ))
+		for(String champ : champs) {
+				if(input.contains(champ)) {
 					actualChamp = champ;
-			for(String value : queryData)
-				if(quote.contains(value)) {
+					actualChampId = ind.getChamp(champ);
+			}
+		}
+			for(String value : queryData) {
+				if(input.contains(value)) {
 					data = value;
 					wantsData = true;
 				}
+			}
+			
+			if (input.contains("juegos jugados")) {
+				data = "gamesPlayed";
+				wantsData = true;
+			}
+			
 			if(wantsData) {
 				response = query(data);
+			}else{
+				
+				response = "No entiendo ¿qué quieres decir?";
 			}
-			response = "No entiendo ¿qué quieres decir?";
+			
+			if (input.equals("hola")) {
+				response = "Hola! Que deseas saber?";
+			}
+			
 	   return response;		
 	}
 	
-	public String query(String data) throws IOException, ParseException {
+	public String query(String data) throws Exception {
 		String output = "";
-		this.actualFile = ind.searchIndex(data, actualChamp);
-		output = ind.simpleDataGetter(actualFile, data);
+		this.actualFile = ind.searchIndex(data, actualChampId.toString());
+		output = "Para " + actualChamp + " " + ind.simpleDataGetter(actualFile, data);
+		
 		return output;
 	}
+	
+public static void main(String[] args) throws Exception {
+		
+		Indexador i = new Indexador();
+		Indexador.createIndex();
+		Client c = new Client (i);
+		
+		
+		System.out.println(c.talk("kills Pyke"));
+		
+	    //i.itemSetter();
+		//img.getChampImage("Pyke");
+    }
 	
 }
 
