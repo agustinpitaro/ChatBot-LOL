@@ -191,6 +191,9 @@ public class Indexador {
 		if (dato.equals("skill")) {
 			data = "el skillpath es " + data.substring(5, data.length()-2);
 		}
+		if (dato.equals("kills")) {
+			data = "las kills promedio por juego son " + data;
+		}
 		if (dato.equals("wins")) {
 			data = "las wins son " + data.substring(16, data.length());
 		}
@@ -223,16 +226,6 @@ public class Indexador {
 		return data;
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		Indexador i = new Indexador();
-		ImageGetter img = new ImageGetter();
-		//i.createIndex();
-		i.searchIndex("cuantos gamesPlayed 555", "15");
-		i.simpleDataGetter(actualFile, "gamesPlayed");
-	    //i.itemSetter();
-		//img.getChampImage("Pyke");
-    }
 }
 
 

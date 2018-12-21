@@ -88,19 +88,6 @@ public class Client {
 		return output;
 	}
 	
-public static void main(String[] args) throws Exception {
-		
-		Indexador i = new Indexador();
-		Indexador.createIndex();
-		Client c = new Client (i);
-		
-		
-		System.out.println(c.talk("kills Pyke"));
-		
-	    //i.itemSetter();
-		//img.getChampImage("Pyke");
-    }
-	
 }
 
 
